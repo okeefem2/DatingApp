@@ -1,0 +1,11 @@
+appsettings.json is always used no matter the environment
+the development version is added after ^ in addition. Properties in development will override any existing in appsettings
+
+
+When creating tables, EF will auto use the Id property for PK.
+
+In a migration, the Up method applies the database changes, down rolls them back!
+
+dotnet ef database update will use the migration class to create our db
+
+
