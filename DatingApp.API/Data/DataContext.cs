@@ -9,6 +9,7 @@ namespace DatingApp.API.Data
         public DataContext(DbContextOptions<DataContext> options) : base (options) {}
 
         public DbSet<Value> Values { get; set; } // This property will be converted to a table
+        public DbSet<User> Users { get; set; } // This property will be converted to a table
 
     }
 }

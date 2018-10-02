@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace DatingApp.API.Controllers
 {
     // http://localhost:5000/api/values
     // [controller] will be replaced with the part of the controller class name before the word Controller
+    [Authorize] // Requests must be authorized, middleware to handle this is setup in startup.cs
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -21,6 +23,7 @@ namespace DatingApp.API.Controllers
         }
 
         // GET api/values
+        // [AllowAnonymous] opens this one endpoint up
         [HttpGet]
         public async Task<IActionResult> GetValues()
         {
