@@ -1,8 +1,20 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/bootswatch/dist/minty/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import '../node_modules/alertifyjs/build/css/alertify.min.css';
+@import '../node_modules/alertifyjs/build/css/themes/bootstrap.min.css';
 
 .app-container {
   margin-top: 75px;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.dropdown {
+  cursor: pointer;
+}
+
+.navbar {
+  padding-left: 30px;
+  padding-right: 30px;
 }

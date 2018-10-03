@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Subscription, Observable } from 'rxjs';
 import { LoginModel } from '../models/login.model';
+import { AlertService } from '../services/alert.service';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
@@ -10,13 +11,13 @@ import { LoginModel } from '../models/login.model';
 })
 export class NavComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
-  public loggedIn: Observable<boolean>;
+  public authState: Observable<any>;
   private loginSubscription = new Subscription();
   constructor(private formBuilder: FormBuilder,
-              private authService: AuthService) { }
+              private authService: AuthService, private alertService: AlertService) { }
 
   public ngOnInit(): void {
-    this.loggedIn = this.authService.checkLoggedIn();
+    this.authState = this.authService.checkAuthState();
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -29,11 +30,10 @@ export class NavComponent implements OnInit, OnDestroy {
       this.loginSubscription.add(
         this.authService.login(this.loginForm.value as LoginModel)
                         .subscribe((response: any) => {
-                          console.log('Login succesful');
+                          this.alertService.success('Logged in successfully');
                         },
                         (error: any) => {
-                          console.log('Login failed');
-                          console.log(error);
+                          this.alertService.error(`Login failed: ${error}`);
                         })
       );
     }
@@ -45,5 +45,6 @@ export class NavComponent implements OnInit, OnDestroy {
 
   public onLogout(): void {
     this.authService.logout();
+    this.alertService.message('Logged out');
   }
 }

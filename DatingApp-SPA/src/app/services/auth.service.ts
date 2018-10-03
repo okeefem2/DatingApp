@@ -4,23 +4,26 @@ import { LoginModel } from '../models/login.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = new BehaviorSubject<boolean>(this.checkToken());
+  private authState = new BehaviorSubject<any>(null);
   private baseUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+    this.checkToken();
     this.baseUrl = environment.apiUrl + '/auth/';
   }
 
-  public checkLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+  public checkAuthState(): Observable<any> {
+    return this.authState.asObservable();
   }
 
-  public changeLoggedIn(loggedIn: boolean): void {
-    this.loggedIn.next(loggedIn);
+  public changeAuthState(authState: any): void {
+    this.authState.next(authState);
   }
 
   public login(loginModel: LoginModel): Observable<any> {
@@ -28,19 +31,29 @@ export class AuthService {
       map((response: any) => {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
-          this.changeLoggedIn(true);
+          this.checkToken();
         }
       })
     );
   }
 
-  private checkToken(): boolean {
-    return localStorage.getItem('token') != null;
+  public checkToken(): void {
+    const token = localStorage.getItem('token');
+    if (!this.jwtHelper.isTokenExpired(token)) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      const user = {
+        id: decodedToken.name_id,
+        username: decodedToken.unique_name
+      };
+      this.changeAuthState(user);
+    } else {
+      this.changeAuthState(null);
+    }
   }
 
   public logout(): void {
     localStorage.removeItem('token');
-    this.changeLoggedIn(false);
+    this.checkToken();
   }
 
   public register(registerModel: LoginModel): Observable<any> {
@@ -48,7 +61,7 @@ export class AuthService {
       map((response: any) => {
         // if (response && response.token) {
         //   localStorage.setItem('token', response.token);
-        //   this.changeLoggedIn(true);
+        //   this.changeauthState(true);
         // }
       })
     );
