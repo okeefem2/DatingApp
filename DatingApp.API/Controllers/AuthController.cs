@@ -48,6 +48,7 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto) 
         {
+            // throw new Exception("Humans Are Not Allowed In The Dog Park");
             // Validate request
             var username = userForLoginDto.Username.ToLower();
             var loggedInUser = await _authRepository.Login(username, userForLoginDto.Password);
@@ -63,7 +64,7 @@ namespace DatingApp.API.Controllers
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));// Sign the token with our server secret token
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature); // Create signing credentials with the security key
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -74,7 +75,6 @@ namespace DatingApp.API.Controllers
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
 
             return Ok(new {
                 token = tokenHandler.WriteToken(token)

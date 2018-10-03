@@ -33,6 +33,7 @@ export class NavComponent implements OnInit, OnDestroy {
                         },
                         (error: any) => {
                           console.log('Login failed');
+                          console.log(error);
                         })
       );
     }

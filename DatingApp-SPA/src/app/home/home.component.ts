@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public onRegister(registerModel: LoginModel): void {
     this.registerSubscription.add(this.authService.register(registerModel).subscribe(() => {
       console.log('Registration success');
-    }, (error: any) => console.log('Registration failed')));
+    }, (error: any) => console.log(error)));
   }
 
   public ngOnDestroy(): void {

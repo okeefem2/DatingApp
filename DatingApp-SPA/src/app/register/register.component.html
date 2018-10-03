@@ -11,7 +11,11 @@
     </div>
 
     <div class="form-group text-center">
-      <button *ngIf="!registerForm.valid" class="btn btn-success mr-2" type="submit">Register</button>
+      <button [disabled]="!registerForm.valid"
+              class="btn btn-success mr-2"
+              type="submit">
+              Register
+      </button>
       <button class="btn btn-default" type="button" (click)="cancel.emit()">Cancel</button>
     </div>
   </form>
