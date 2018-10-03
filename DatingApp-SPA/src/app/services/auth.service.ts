@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,9 @@ export class AuthService {
   private authState = new BehaviorSubject<any>(null);
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+  constructor(private http: HttpClient,
+              private jwtHelper: JwtHelperService,
+              private router: Router) {
     this.checkToken();
     this.baseUrl = environment.apiUrl + '/auth/';
   }
@@ -32,6 +35,7 @@ export class AuthService {
         if (response && response.token) {
           localStorage.setItem('token', response.token);
           this.checkToken();
+          this.router.navigate(['/members']);
         }
       })
     );
@@ -54,6 +58,7 @@ export class AuthService {
   public logout(): void {
     localStorage.removeItem('token');
     this.checkToken();
+    this.router.navigate(['/home']);
   }
 
   public register(registerModel: LoginModel): Observable<any> {

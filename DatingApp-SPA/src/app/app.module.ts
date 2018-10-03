@@ -10,6 +10,10 @@ import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './services/error.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { MemberListComponent } from './member-list/member-list.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -22,6 +26,9 @@ export function tokenGetter() {
     NavComponent,
     HomeComponent,
     RegisterComponent,
+    MemberListComponent,
+    ListsComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +41,8 @@ export function tokenGetter() {
         tokenGetter: tokenGetter
       }
     }),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    AppRoutingModule,
   ],
   providers: [
     ErrorInterceptorProvider
