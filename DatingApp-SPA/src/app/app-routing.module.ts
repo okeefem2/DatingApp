@@ -7,7 +7,7 @@ import { MemberListComponent } from './member-list/member-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',
@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'lists', component: ListsComponent }
     ]
   },
-  { path: '**', redirectTo: 'home', pathMatch: 'full' }
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({
