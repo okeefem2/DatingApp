@@ -18,7 +18,7 @@ export class AuthService {
               private jwtHelper: JwtHelperService,
               private router: Router) {
     this.checkToken();
-    this.baseUrl = environment.apiUrl + '/auth/';
+    this.baseUrl = `${environment.apiUrl}/auth/`;
   }
 
   public checkAuthState(): Observable<any> {

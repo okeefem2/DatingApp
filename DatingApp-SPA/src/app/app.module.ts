@@ -1,19 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider } from './services/error.interceptor';
+import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
-import { BsDropdownModule } from 'ngx-bootstrap';
-import { MemberListComponent } from './member-list/member-list.component';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { TokenInterceptorProvider } from './interceptors/token.interceptor';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { NgxGalleryModule } from 'ngx-gallery';
+import { MemberGalleryComponent } from './members/member-gallery/member-gallery.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -29,6 +34,9 @@ export function tokenGetter() {
     MemberListComponent,
     ListsComponent,
     MessagesComponent,
+    MemberCardComponent,
+    MemberDetailComponent,
+    MemberGalleryComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,10 +50,13 @@ export function tokenGetter() {
       }
     }),
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    NgxGalleryModule,
     AppRoutingModule,
   ],
   providers: [
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    TokenInterceptorProvider,
   ],
   bootstrap: [AppComponent]
 })

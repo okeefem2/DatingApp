@@ -1,0 +1,42 @@
+.card:hover img {
+  /* zoom in x and y 1.2 times */
+  transform: scale(1.2, 1.2);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+  opacity: 0.7;
+}
+
+.card img {
+  /* zoom in x and y 1.2 times */
+  transform: scale(1.0, 1.0);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+}
+
+.card-img-wrapper {
+  /* Gives the effect of zooming inside the wrapper */
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.member-icons {
+  position: absolute;
+  bottom: -30%;
+  left: 0;
+  right: 0;
+  /* auto margin to keep them centered */
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0;
+}
+
+.card-img-wrapper:hover .member-icons {
+  bottom: 0;
+  opacity: 1;
+}
+
+.animate {
+  transition: all 0.3s ease-in-out;
+}
+
