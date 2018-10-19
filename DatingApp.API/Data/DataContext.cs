@@ -10,6 +10,8 @@ namespace DatingApp.API.Data
 
         public DbSet<Value> Values { get; set; } // This property will be converted to a table
         public DbSet<User> Users { get; set; } // This property will be converted to a table
+        public DbSet<Photo> Photos { get; set; } // This property will be converted to a table
+
 
     }
 }

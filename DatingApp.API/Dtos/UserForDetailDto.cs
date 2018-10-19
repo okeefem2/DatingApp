@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using DatingApp.API.Models;
 
-namespace DatingApp.API.Models
+namespace DatingApp.API.Dtos
 {
-    public class User
+    public class UserForDetailDto
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        [JsonIgnore] // This only works for json serialization though, check this out for more info https://stackoverflow.com/questions/11851207/prevent-property-from-being-serialized-in-web-api
-        public byte[] PasswordHash { get; set; }
-        [JsonIgnore]
-        public byte[] PasswordSalt { get; set; }
         public string Gender { get; set; }
-        public DateTime birthDate { get; set; }
+        public int Age { get; set; }
         public string KnownAs { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
@@ -22,6 +18,7 @@ namespace DatingApp.API.Models
         public string Interests { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public ICollection<Photo> Photos { get; set; } // One to many relationship
+        public String PhotoUrl { get; set; }
+        public ICollection<PhotoForDetailDto> Photos { get; set; }
     }
 }

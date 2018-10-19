@@ -8,4 +8,14 @@ In a migration, the Up method applies the database changes, down rolls them back
 
 dotnet ef database update will use the migration class to create our db
 
+migrations are creating with an up and down method
 
+dotnot ef database update NameOfMigration -- will run the down method if the migration has already been applied
+
+sometimes this fails. Sometimes it's best to just drop the db and rebuild it with dotnot ef database update NameOfMigration
+
+dotnet ef database drop -- drops the db obvi
+
+dotnet ef migrations remove to remove the migration you didn't want
+
+dotnet ef database update -- applies all of the migrations you have to rebuild the db

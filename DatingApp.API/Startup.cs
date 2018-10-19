@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,9 +36,15 @@ namespace DatingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); //AddScoped: Service is created once per request in a scope (one for each http request, use same instance for other calls within the request)
+            services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                    .AddJsonOptions(opt => {
+                        opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    });
             services.AddCors();
+            services.AddAutoMapper();
+            services.AddTransient<Seed>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => { // Register authentication scheme
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -50,7 +57,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -76,7 +83,7 @@ namespace DatingApp.API
                 }); // Global try catch
                 // app.UseHsts(); // This tells the browser only to send over https
             }
-
+            // seeder.SeedUsers(); // Uncomment me to seed the database on app startup, recomment once the data is seeded otherwise it will seed more data every time you start the app
             app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             // app.UseHttpsRedirection();
             app.UseAuthentication(); // Tell the http pipeline to use the registered authentication scheme
