@@ -45,8 +45,9 @@ export class AuthService {
     const token = localStorage.getItem('token');
     if (!this.jwtHelper.isTokenExpired(token)) {
       const decodedToken = this.jwtHelper.decodeToken(token);
+      // debugger;
       const user = {
-        id: decodedToken.name_id,
+        id: decodedToken.nameid,
         username: decodedToken.unique_name
       };
       this.changeAuthState(user);

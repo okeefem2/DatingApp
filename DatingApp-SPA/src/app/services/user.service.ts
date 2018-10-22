@@ -20,4 +20,8 @@ export class UserService {
   public getUser(id: number): Observable<UserModel> {
     return this.http.get<UserModel>(`${this.baseUrl}/${id}`);
   }
+
+  public updateUser(id: number, user: UserModel): Observable<UserModel> {
+    return this.http.put<UserModel>(`${this.baseUrl}/${id}`, user);
+  }
 }

@@ -32,6 +32,7 @@ namespace DatingApp.API.helpers
                         );
                     });
             CreateMap<Photo, PhotoForDetailDto>();
+            CreateMap<UserFormDto, User>(); // DTO first since we are mapping the DTO to a user (frontend > database)
         }
     }
 }

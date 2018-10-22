@@ -19,6 +19,7 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { MemberGalleryComponent } from './members/member-gallery/member-gallery.component';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -37,6 +38,7 @@ export function tokenGetter() {
     MemberCardComponent,
     MemberDetailComponent,
     MemberGalleryComponent,
+    MemberEditComponent,
   ],
   imports: [
     BrowserModule,
