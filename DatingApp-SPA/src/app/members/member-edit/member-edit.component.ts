@@ -34,7 +34,7 @@ export class MemberEditComponent implements OnInit {
     }, error => this.alertService.error(`There was an error updating the user ${error}`));
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  @HostListener('window:beforeunload', ['$event']) // Prompts user before closing browser window/tab
   public unloadNotification($event: any): void {
     if (this.editForm.dirty) {
       $event.returnValue = true;

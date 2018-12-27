@@ -12,5 +12,6 @@ namespace DatingApp.API.Models
         // This ties the tables together, and will cause a cascade delete to occur (User deleted causes the photo to delete as well)
         public User User { get; set; } // Newtonsoft.Json.JsonSerializationException: Self referencing loop detected for property
         public int UserId { get; set; }
+        public string PublicId { get; set; }
     }
 }
