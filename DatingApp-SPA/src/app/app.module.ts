@@ -23,7 +23,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { PhotoUploadComponent } from './members/photo-upload/photo-upload.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ControlInvalidPipe } from './pipes/control-invalid.pipe';
-
+import { TimeAgoPipe } from 'time-ago-pipe';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -44,6 +44,7 @@ export function tokenGetter() {
     MemberEditComponent,
     PhotoUploadComponent,
     ControlInvalidPipe,
+    TimeAgoPipe
   ],
   imports: [
     BsDatepickerModule.forRoot(),
