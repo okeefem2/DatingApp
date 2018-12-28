@@ -3,6 +3,7 @@ import { LoginModel } from '../models/login.model';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../services/alert.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -23,10 +24,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   public onRegister(registerModel: LoginModel): void {
-    this.registerSubscription.add(this.authService.register(registerModel).subscribe(() => {
-      console.log('Registration success');
-      this.alertService.success('Registered successfully');
-      this.authService.login(registerModel);
+    this.registerSubscription.add(this.authService.register(registerModel).pipe(
+      switchMap(() => {
+        console.log('Registration success');
+        this.alertService.success('Registered successfully');
+        return this.authService.login(registerModel);
+      })
+    ).subscribe(() => {
+      console.log('logged in');
     }, (error: any) => this.alertService.error(`Registration failed: ${error}`)));
   }
 

@@ -3,11 +3,71 @@
     <hr>
 
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" formControlName="username">
+      <label class="control-label mr-3">
+        I am a:
+      </label>
+      <label class="radio-inline mr-3">
+        <input class="mr-2" type="radio" value="female" formControlName="gender">Female
+      </label>
+      <label class="radio-inline">
+          <input class="mr-2" type="radio" value="male" formControlName="gender">Male
+      </label>
     </div>
 
     <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" formControlName="password">
+        <input type="text" [ngClass]="{'is-invalid': (getControlErrors('knownAs') | controlInvalid:{touched: getControlTouched('knownAs'), errors: ['required']})}" class="form-control" placeholder="Known As" formControlName="knownAs">
+        <div class="invalid-feedback">
+            Known As is required
+          </div>
+      </div>
+
+      <div class="form-group">
+          <!-- <input type="date" [ngClass]="{'is-invalid': (getControlErrors('dateOfBirth') | controlInvalid:{touched: getControlTouched('dateOfBirth'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="dateOfBirth"> -->
+          <input bsDatepicker [bsConfig]="bsDpConfig" type="text" [ngClass]="{'is-invalid': (getControlErrors('dateOfBirth') | controlInvalid:{touched: getControlTouched('dateOfBirth'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="dateOfBirth">
+          <div class="invalid-feedback">
+              Date Of Birth is required
+            </div>
+        </div>
+
+    <div class="form-group">
+      <input type="text" [ngClass]="{'is-invalid': (getControlErrors('city') | controlInvalid:{touched: getControlTouched('city'), errors: ['required']})}" class="form-control" placeholder="City" formControlName="city">
+      <div class="invalid-feedback">
+          City is required
+        </div>
+    </div>
+
+      <div class="form-group">
+        <input type="text" [ngClass]="{'is-invalid': (getControlErrors('country') | controlInvalid:{touched: getControlTouched('country'), errors: ['required']})}" class="form-control" placeholder="Country" formControlName="country">
+        <div class="invalid-feedback">
+            Country is required
+          </div>
+      </div>
+
+    <div class="form-group">
+      <input type="text" [ngClass]="{'is-invalid': (getControlErrors('username') | controlInvalid:{touched: getControlTouched('username'), errors: ['required']})}" class="form-control" placeholder="Username" formControlName="username">
+      <div class="invalid-feedback">
+          Username is required
+        </div>
+    </div>
+
+    <div class="form-group">
+      <input type="password" [ngClass]="{'is-invalid': (getControlErrors('password') | controlInvalid:{touched: getControlTouched('password'), errors: ['required', 'minlength', 'maxlength']})}" class="form-control" placeholder="Password" formControlName="password">
+      <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('required')">
+        Password is required
+      </div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('minlength')">
+          Password must be at least 8 characters long
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('maxlength')">
+            Password must be less than 32 characters
+          </div>
+    </div>
+
+    <div class="form-group">
+      <input type="password" [ngClass]="{'is-invalid': (registerForm.errors | controlInvalid:{touched: getControlTouched('confirmPassword'), errors: ['mismatch']})}" class="form-control" placeholder="Confirm Password" formControlName="confirmPassword">
+      <div class="invalid-feedback">
+          Passwords do not match
+        </div>
     </div>
 
     <div class="form-group text-center">

@@ -9,7 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
-import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -22,6 +22,7 @@ import { MemberGalleryComponent } from './members/member-gallery/member-gallery.
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PhotoUploadComponent } from './members/photo-upload/photo-upload.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ControlInvalidPipe } from './pipes/control-invalid.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -42,8 +43,10 @@ export function tokenGetter() {
     MemberGalleryComponent,
     MemberEditComponent,
     PhotoUploadComponent,
+    ControlInvalidPipe,
   ],
   imports: [
+    BsDatepickerModule.forRoot(),
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,

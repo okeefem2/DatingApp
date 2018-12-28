@@ -14,7 +14,7 @@
   </ul>
   <div class="dropdown" *ngIf="(authState | async); else login" dropdown>
     <span class="mr-1">
-      <img [src]="(authState | async).photoUrl" alt="User main photo">
+      <img [src]="(authState | async).photoUrl || 'https://res.cloudinary.com/dt9hsboko/image/upload/v1546016343/default-pic.png'" alt="User main photo">
     </span>
     <a class="dropdown-toggle text-light" dropdownToggle>
       Welcome {{ (((authState | async).username) | uppercase) }}

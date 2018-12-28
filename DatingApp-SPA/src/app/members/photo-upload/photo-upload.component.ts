@@ -47,6 +47,9 @@ export class PhotoUploadComponent implements OnInit {
         if (response) {
           const photo: PhotoModel = JSON.parse(response);
           this.photos.push(photo);
+          if (photo.isMain) {
+            this.mainPhotoChanged.emit(photo.url);
+          }
         }
       };
     });
@@ -76,7 +79,7 @@ export class PhotoUploadComponent implements OnInit {
   }
 
   public deletePhoto(photoId: number): void {
-    this.alertService.confirm('Are you sure you want to delete this photo? This action cannot be undone', () => {
+    this.alertService.confirm('Are you sure you want to delete this photo? This action cannot be undone', (choice: any) => {
       this.authService.checkAuthState().pipe(
         take(1),
         switchMap((user) => {

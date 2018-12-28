@@ -76,7 +76,7 @@ namespace DatingApp.API.Controllers
                 photoDto.PublicId = uploadResult.PublicId;
                 Photo photoToSave = _mapper.Map<Photo>(photoDto);
 
-                if (currentUser.Photos.Any(photo => photo.IsMain))
+                if (!currentUser.Photos.Any(photo => photo.IsMain))
                 {
                     photoToSave.IsMain = true;
                 }
@@ -106,7 +106,10 @@ namespace DatingApp.API.Controllers
 
             Photo oldMainPhoto = currentUser.Photos.FirstOrDefault(p => p.IsMain);
 
-            oldMainPhoto.IsMain = false;
+            if (oldMainPhoto != null) {
+                oldMainPhoto.IsMain = false;
+            }
+
             newMainPhoto.IsMain = true;
 
             if (await _repository.SaveAll())

@@ -8,7 +8,7 @@ export class AlertService {
 
   public constructor() { }
 
-  public confirm(message: string, okCallback: (choice: any) => {}): any {
+  public confirm(message: string, okCallback: (choice: any) => any): any {
     return alertify.confirm(message, okCallback);
   }
 
