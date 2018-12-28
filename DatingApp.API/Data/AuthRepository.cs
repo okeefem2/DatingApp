@@ -14,7 +14,8 @@ namespace DatingApp.API.Data
         }
         public async Task<User> Login(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username); // Or default returns null if none found
+            // In a real app I would only bring back the main photo
+            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(x => x.Username == username); // Or default returns null if none found
             if (user == null)
                 return null;
             

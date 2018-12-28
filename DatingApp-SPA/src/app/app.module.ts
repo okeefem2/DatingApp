@@ -20,6 +20,8 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { NgxGalleryModule } from 'ngx-gallery';
 import { MemberGalleryComponent } from './members/member-gallery/member-gallery.component';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { PhotoUploadComponent } from './members/photo-upload/photo-upload.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -39,6 +41,7 @@ export function tokenGetter() {
     MemberDetailComponent,
     MemberGalleryComponent,
     MemberEditComponent,
+    PhotoUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ export function tokenGetter() {
     TabsModule.forRoot(),
     NgxGalleryModule,
     AppRoutingModule,
+    FileUploadModule,
   ],
   providers: [
     ErrorInterceptorProvider,

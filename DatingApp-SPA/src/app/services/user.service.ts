@@ -24,4 +24,12 @@ export class UserService {
   public updateUser(id: number, user: UserModel): Observable<UserModel> {
     return this.http.put<UserModel>(`${this.baseUrl}/${id}`, user);
   }
+
+  public setMainPhoto(id: number, photoId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/${id}/photos/${photoId}/setMain`, {});
+  }
+
+  public deletePhoto(id: number, photoId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/${id}/photos/${photoId}`);
+  }
 }

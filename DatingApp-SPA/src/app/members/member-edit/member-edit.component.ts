@@ -40,4 +40,9 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue = true;
     }
   }
+
+  public updateMainPhotoUrl(photoUrl: string): void {
+    this.user.photoUrl = photoUrl;
+    this.authService.updatePhotoUrl(photoUrl);
+  }
 }

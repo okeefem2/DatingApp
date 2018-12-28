@@ -13,6 +13,9 @@
     </li>
   </ul>
   <div class="dropdown" *ngIf="(authState | async); else login" dropdown>
+    <span class="mr-1">
+      <img [src]="(authState | async).photoUrl" alt="User main photo">
+    </span>
     <a class="dropdown-toggle text-light" dropdownToggle>
       Welcome {{ (((authState | async).username) | uppercase) }}
     </a>
