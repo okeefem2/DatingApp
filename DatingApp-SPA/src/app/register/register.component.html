@@ -22,8 +22,8 @@
       </div>
 
       <div class="form-group">
-          <!-- <input type="date" [ngClass]="{'is-invalid': (getControlErrors('dateOfBirth') | controlInvalid:{touched: getControlTouched('dateOfBirth'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="dateOfBirth"> -->
-          <input bsDatepicker [bsConfig]="bsDpConfig" type="text" [ngClass]="{'is-invalid': (getControlErrors('dateOfBirth') | controlInvalid:{touched: getControlTouched('dateOfBirth'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="dateOfBirth">
+          <!-- <input type="date" [ngClass]="{'is-invalid': (getControlErrors('birthDate') | controlInvalid:{touched: getControlTouched('birthDate'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="birthDate"> -->
+          <input bsDatepicker [bsConfig]="bsDpConfig" type="text" [ngClass]="{'is-invalid': (getControlErrors('birthDate') | controlInvalid:{touched: getControlTouched('birthDate'), errors: ['required']})}" class="form-control" placeholder="Date Of Birth" formControlName="birthDate">
           <div class="invalid-feedback">
               Date Of Birth is required
             </div>
