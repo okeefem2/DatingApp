@@ -15,7 +15,8 @@ export class UserService {
     this.baseUrl = `${environment.apiUrl}/users`;
   }
 
-  public getUsers(pageNumber?: number, itemsPerPage?: number, userParams?: any): Observable<PaginatedResult<UserModel[]>> {
+  public getUsers(pageNumber?: number, itemsPerPage?: number, userParams?: any,
+    likesParam?: string): Observable<PaginatedResult<UserModel[]>> {
     let params = new HttpParams();
     if (!!pageNumber && !!itemsPerPage) {
       params = params.append('pageNumber', pageNumber.toString());
@@ -27,6 +28,10 @@ export class UserService {
       params = params.append('maxAge', userParams.maxAge.toString());
       params = params.append('gender', userParams.gender.toString());
       params = params.append('orderBy', userParams.orderBy.toString());
+    }
+
+    if (!!likesParam) {
+      params = likesParam === 'likers' ? params.append('likers', 'true') : params.append('likees', 'true');
     }
     return this.http.get<UserModel[]>(`${this.baseUrl}`, { observe: 'response', params }).pipe(
       map((response: HttpResponse<UserModel[]>) => {
@@ -54,5 +59,9 @@ export class UserService {
 
   public deletePhoto(id: number, photoId: number): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}/photos/${photoId}`);
+  }
+
+  public likeUser(likerId: number, likeeId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/${likerId}/like/${likeeId}`, {});
   }
 }

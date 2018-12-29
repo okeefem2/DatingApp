@@ -63,9 +63,17 @@ export class MemberListComponent implements OnInit {
     );
   }
 
-  setOrderBy(orderBy: string): void {
+  public setOrderBy(orderBy: string): void {
     this.userParams.orderBy = orderBy;
     this.loadUsers();
+  }
+
+  public onUserLiked(userId: number): void {
+    this.userService.likeUser(this.user.id, userId).subscribe((result) => {
+      this.alertService.success('User Liked!');
+    }, error => {
+      this.alertService.error(error);
+    });
   }
 
 }

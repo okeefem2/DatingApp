@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { UserModel } from '../../models/user.model';
 
 @Component({
@@ -7,6 +7,6 @@ import { UserModel } from '../../models/user.model';
   styleUrls: ['./member-card.component.css']
 })
 export class MemberCardComponent {
-  @Input() public  user: UserModel;
-
+  @Input() public user: UserModel;
+  @Output() public userLiked = new EventEmitter<number>();
 }
