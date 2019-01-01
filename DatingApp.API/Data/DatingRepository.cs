@@ -102,5 +102,46 @@ namespace DatingApp.API.Data
             }
 
         }
+
+        public async Task<Message> GetMessage(int id)
+        {
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
+        {
+            var messages = _context.Messages
+                .Include(m => m.Sender).ThenInclude(u => u.Photos)
+                .Include(m => m.Recipient).ThenInclude(u => u.Photos).AsQueryable();
+
+            switch (messageParams.MessageContainer)
+            {
+                case "inbox":
+                    messages = messages.Where(m => m.RecipientId == messageParams.UserId && !m.RecipientDeleted);
+                    break;
+                case "outbox":
+                    messages = messages.Where(m => m.SenderId == messageParams.UserId  && !m.SenderDeleted);
+                    break;
+                default:
+                    messages = messages.Where(m => m.RecipientId == messageParams.UserId && !m.RecipientDeleted && !m.IsRead);
+                    break;
+            }
+            
+            messages = messages.OrderByDescending(m => m.DateSent);
+
+            return await PagedList<Message>.CreateAsync(messages, messageParams);
+        }
+
+        public async Task<IEnumerable<Message>> GetMessageThread(int senderId, int recipientId)
+        {
+            // For performance it would be better to just grab the messages, then query once for the sender and recip and attach the info needed?
+            return await _context.Messages
+                .Include(m => m.Sender).ThenInclude(u => u.Photos)
+                .Include(m => m.Recipient).ThenInclude(u => u.Photos)
+                .Where(m => (m.RecipientId == recipientId && m.SenderId == senderId && !m.RecipientDeleted) 
+                    || (m.RecipientId == senderId && m.SenderId == recipientId && !m.SenderDeleted)
+                )
+                .OrderByDescending(m => m.DateSent).ToListAsync();
+        }
     }
 }

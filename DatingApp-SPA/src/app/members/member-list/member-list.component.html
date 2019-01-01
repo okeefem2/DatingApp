@@ -25,7 +25,7 @@
             <label for="gender">Show: </label>
             <select class="form-control" style="width: 130px" id="gender" name="gender" [(ngModel)]="userParams.gender">
               <option *ngFor="let gender of genders" [value]="gender.value">
-                {{ gender. displayName }}
+                {{ gender.displayName }}
               </option>
             </select>
           </div>

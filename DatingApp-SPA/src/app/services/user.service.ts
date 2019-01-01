@@ -4,7 +4,8 @@ import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserModel } from '../models/user.model';
 import { PaginatedResult } from '../models/pagination.model';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
+import { MessageModel } from '../models/message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,51 @@ export class UserService {
         return paginatedResult;
       })
     );
+  }
+
+  public getUserMessages(userId: number,
+    pageNumber?: number,
+    itemsPerPage?: number,
+    messageContainer?: string): Observable<PaginatedResult<MessageModel[]>> {
+    let params = new HttpParams();
+    if (!!pageNumber && !!itemsPerPage) {
+      params = params.append('pageNumber', pageNumber.toString());
+      params = params.append('itemsPerPage', itemsPerPage.toString());
+    }
+
+    if (!!messageContainer) {
+      params = params.append('messageContainer', messageContainer);
+    }
+    return this.http.get<MessageModel[]>(`${this.baseUrl}/${userId}/messages`, { observe: 'response', params }).pipe(
+      // Need the observe config so that we can get the whole response
+      // so that we can access the headers of the response for the pagination headers
+      // I'm not entirely sure why we do not just return everything together in an object /shrug
+      // that's probably how I would do it rather than  storing the pagination in the headers
+      map((response: HttpResponse<MessageModel[]>) => {
+        const paginatedResult = new PaginatedResult<MessageModel[]>();
+        paginatedResult.result = response.body;
+        if (!!response.headers.get('Pagination')) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      })
+    );
+  }
+
+  public getMessageThread(userId: number, recipientId: number): Observable<MessageModel[]> {
+    return this.http.get<MessageModel[]>(`${this.baseUrl}/${userId}/messages/thread/${recipientId}`);
+  }
+
+  public sendMessage(userId: number, message: Partial<MessageModel>): Observable<MessageModel> {
+    return this.http.post<MessageModel>(`${this.baseUrl}/${userId}/messages/`, message);
+  }
+
+  public deleteMessage(userId: number, messageId: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/${userId}/messages/${messageId}`, {});
+  }
+
+  public readMessage(userId: number, messageId: number): void {
+    this.http.post<any>(`${this.baseUrl}/${userId}/messages/read/${messageId}`, {}).pipe(take(1)).subscribe();
   }
 
   public getUser(id: number): Observable<UserModel> {

@@ -1,0 +1,68 @@
+
+<div class="card">
+  <div class="card-body">
+      <ul *ngIf="messages && messages.length > 0; else no_messages" class="chat">
+          <li *ngFor="let message of messages">
+            <!-- to them -->
+            <div *ngIf="message.senderId == recipientId">
+              <span class="chat-img float-left">
+                <img class="rounded-circle" [src]="message.senderPhotoUrl" [alt]="message.senderKnownAs">
+              </span>
+              <div class="chat-body">
+                <div class="header">
+                  <strong class="primary-font">
+                    {{ message.senderKnownAs }}
+                  </strong>
+                  <small class="text-muted float-right">
+                    <span class="fa fa-clock-o mr-2">
+                      &nbsp; {{ message.dateSent | timeAgo }}
+                    </span>
+                    <span *ngIf="!message.isRead " class="text-danger mr-2">(unread)</span>
+                    <span *ngIf="message.isRead" class="text-success mr-2">(read) {{ message.dateRead | timeAgo }}</span>
+                    <p class="ml-2">
+                      {{ message.content }}
+                    </p>
+                  </small>
+                </div>
+              </div>
+            </div>
+            <!-- to me -->
+            <div *ngIf="message.recipientId == recipientId">
+                <span class="chat-img float-right">
+                    <img class="rounded-circle" [src]="message.senderPhotoUrl" [alt]="message.recipientKnownAs">
+                  </span>
+                  <div class="chat-body">
+                    <div class="header">
+                      <strong class="primary-font float-right">
+                        {{ message.senderKnownAs }}
+                      </strong>
+                      <small class="text-muted">
+                          <span class="fa fa-clock-o mr-2">&nbsp; {{ message.dateSent | timeAgo }}</span>
+                          <span *ngIf="!message.isRead" class="text-danger mr-2">(unread)</span>
+                          <span *ngIf="message.isRead" class="text-success mr-2">(read) {{ message.dateRead | timeAgo }}</span>
+                        <p>
+                          {{ message.content }}
+                        </p>
+                      </small>
+                    </div>
+                  </div>
+            </div>
+          </li>
+      </ul>
+      <ng-template #no_messages>
+        No Messages Yet
+      </ng-template>
+    </div>
+    <div class="card-footer">
+      <form (ngSubmit)="newMessage.content && sendMessage()">
+        <div class="input-group">
+          <input type="text" class="form-control input-sm" placeholder="Send a private message" [(ngModel)]="newMessage.content" name="newMessage.content">
+          <div class="input-group-append">
+            <button class="btn btn-primary" [disabled]="!newMessage.content">
+              Send
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
