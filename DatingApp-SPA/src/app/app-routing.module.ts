@@ -9,6 +9,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './resolvers/member-edit.resolver';
 import { FormGuard } from './guards/form.guard';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
       { path: 'member/edit', component: MemberEditComponent, resolve: { user: MemberEditResolver }, canDeactivate: [FormGuard] },
       { path: 'members/:id', component: MemberDetailComponent },
       { path: 'messages', component: MessagesComponent },
-      { path: 'lists', component: ListsComponent }
+      { path: 'lists', component: ListsComponent },
+      { path: 'admin', component: AdminPanelComponent, data: { roles: ['Admin', 'Moderator']} }
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }

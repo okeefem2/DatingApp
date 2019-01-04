@@ -15,12 +15,12 @@ namespace DatingApp.API.Data
         public async Task<User> Login(string username, string password)
         {
             // In a real app I would only bring back the main photo
-            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(x => x.Username == username); // Or default returns null if none found
+            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(x => x.UserName == username); // Or default returns null if none found
             if (user == null)
                 return null;
             
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-                return null;
+            // if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            //     return null;
 
             return user;
         }
@@ -30,8 +30,8 @@ namespace DatingApp.API.Data
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt); // Typically vars are passed by value
             // out keyword passes var by reference
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            // user.PasswordHash = passwordHash;
+            // user.PasswordSalt = passwordSalt;
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
@@ -39,7 +39,7 @@ namespace DatingApp.API.Data
 
         public async Task<bool> UserExists(string username)
         {
-            return await _context.Users.AnyAsync(x => x.Username == username);
+            return await _context.Users.AnyAsync(x => x.UserName == username);
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

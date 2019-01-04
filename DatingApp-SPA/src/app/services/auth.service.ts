@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 import { UserModel } from '../models/user.model';
-import { debug } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +76,20 @@ export class AuthService {
     user.photoUrl = photoUrl;
     localStorage.setItem('user', JSON.stringify(user));
     this.checkToken();
+  }
+
+  public checkRoles(roles: string[]): boolean {
+    console.log(roles);
+    if (!roles || roles.length === 0) {
+      return true;
+    }
+    const token = localStorage.getItem('token');
+    if (!this.jwtHelper.isTokenExpired(token)) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      console.log(decodedToken);
+      const userRoles = decodedToken.role as Array<string>;
+      return roles.some((role: string) => userRoles.indexOf(role) >= 0);
+    }
+    return false;
   }
 }

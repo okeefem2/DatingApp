@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace DatingApp.API.Controllers
 {
-    [Authorize]
+    // [Authorize] Can remove now that identity auths globally
     [Route("api/users/{userId}/photos")]
     [ApiController]
     public class PhotosController : ControllerBase

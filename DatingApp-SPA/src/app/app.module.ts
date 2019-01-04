@@ -25,6 +25,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ControlInvalidPipe } from './pipes/control-invalid.pipe';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './directives/has-role.directive';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -32,6 +34,7 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
+    HasRoleDirective,
     ValueComponent,
     NavComponent,
     HomeComponent,
@@ -46,16 +49,17 @@ export function tokenGetter() {
     PhotoUploadComponent,
     ControlInvalidPipe,
     TimeAgoPipe,
-    MemberMessagesComponent
+    MemberMessagesComponent,
+    AdminPanelComponent,
   ],
   imports: [
+    BrowserModule,
+    FormsModule,
     BsDatepickerModule.forRoot(),
     ButtonsModule.forRoot(),
     PaginationModule.forRoot(),
-    BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {

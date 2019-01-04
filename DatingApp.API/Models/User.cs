@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
 namespace DatingApp.API.Models
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        [JsonIgnore] // This only works for json serialization though, check this out for more info https://stackoverflow.com/questions/11851207/prevent-property-from-being-serialized-in-web-api
-        public byte[] PasswordHash { get; set; }
-        [JsonIgnore]
-        public byte[] PasswordSalt { get; set; }
         public string Gender { get; set; }
         public DateTime birthDate { get; set; }
         public string KnownAs { get; set; }
@@ -27,5 +22,6 @@ namespace DatingApp.API.Models
         public ICollection<Like> Likees { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }
