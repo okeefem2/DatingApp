@@ -10,7 +10,8 @@ export class HasRoleDirective {
 
   // Adding * on structural directive changes the element to an ng template
 
-  @Input() set hasRoles(roles: string[]) {
+  @Input()
+  public set appHasRole(roles: string[]) {
     if (this.authService.checkRoles(roles) && !this.hasView) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
       this.hasView = true;
