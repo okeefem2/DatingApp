@@ -54,7 +54,7 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            User currentUser = await _repository.GetUser(userId);
+            User currentUser = await _repository.GetUser(userId, true);
 
             IFormFile file = photoDto.File;
 
@@ -96,7 +96,7 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            User currentUser = await _repository.GetUser(userId);
+            User currentUser = await _repository.GetUser(userId, true);
             Photo newMainPhoto = currentUser.Photos.FirstOrDefault(p => p.Id == photoId);
             if (newMainPhoto == null)
                 return Unauthorized();
@@ -124,7 +124,7 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            User currentUser = await _repository.GetUser(userId);
+            User currentUser = await _repository.GetUser(userId, true);
             Photo photoToDelete = currentUser.Photos.FirstOrDefault(p => p.Id == photoId);
             
             if (photoToDelete.IsMain)

@@ -9,7 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
-import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule, ModalModule } from 'ngx-bootstrap';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
@@ -27,6 +27,9 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './directives/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { EditRoleModalComponent } from './admin/edit-role-modal/edit-role-modal.component';
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
@@ -51,6 +54,9 @@ export function tokenGetter() {
     TimeAgoPipe,
     MemberMessagesComponent,
     AdminPanelComponent,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    EditRoleModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +74,7 @@ export function tokenGetter() {
     }),
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
+    ModalModule.forRoot(),
     NgxGalleryModule,
     AppRoutingModule,
     FileUploadModule,
@@ -76,6 +83,7 @@ export function tokenGetter() {
     ErrorInterceptorProvider,
     TokenInterceptorProvider,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EditRoleModalComponent]
 })
 export class AppModule { }

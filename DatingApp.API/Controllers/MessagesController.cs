@@ -78,11 +78,11 @@ namespace DatingApp.API.Controllers
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            User currentUser = await _repository.GetUser(userId);
+            User currentUser = await _repository.GetUser(userId, true);
 
             messageDto.SenderId = userId;
 
-            User recipient = await _repository.GetUser(messageDto.RecipientId);
+            User recipient = await _repository.GetUser(messageDto.RecipientId, false);
 
             if (recipient == null)
                 return BadRequest("Recipient does not exist");

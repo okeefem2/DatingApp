@@ -4,6 +4,7 @@ export class PhotoModel {
     public url: string,
     public description: string,
     public dateAdded: Date,
-    public isMain: boolean
+    public isMain: boolean,
+    public isApproved: boolean
   ) {}
 }

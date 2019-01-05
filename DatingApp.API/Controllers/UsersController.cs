@@ -31,7 +31,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var currentUser = await _repository.GetUser(currentUserId);
+            var currentUser = await _repository.GetUser(currentUserId, true);
             userParams.UserId = currentUserId;
             if (string.IsNullOrEmpty(userParams.Gender))
             {
@@ -46,7 +46,8 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repository.GetUser(id);
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value ) == id;
+            var user = await _repository.GetUser(id, isCurrentUser);
             var mappedUser = _mapper.Map<UserForDetailDto>(user);
             return Ok(mappedUser);
         }
@@ -56,7 +57,7 @@ namespace DatingApp.API.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // Makes sure the user that is being edited is the person who is logged in
                 return Unauthorized();
-            var currentUser = await _repository.GetUser(id);
+            var currentUser = await _repository.GetUser(id, true);
             _mapper.Map(userFormDto, currentUser); // Update just the matching values between these objects
             return await _repository.SaveAll() ? NoContent() : throw new Exception($"Updating user {id} failed on save.");
         }
@@ -72,7 +73,9 @@ namespace DatingApp.API.Controllers
             if (like != null) // Or could we just delete it?
                 return BadRequest("You already like this user");
 
-            if (await _repository.GetUser(likeeId) == null)
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value ) == likeeId;
+
+            if (await _repository.GetUser(likeeId, isCurrentUser) == null)
                 return NotFound();
             
             like = new Like

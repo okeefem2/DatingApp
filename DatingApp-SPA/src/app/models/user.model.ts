@@ -15,6 +15,7 @@ export class UserModel {
     public interests?: string,
     public introduction?: string,
     public lookingFor?: string,
-    public photos?: PhotoModel[]
+    public photos?: PhotoModel[],
+    public roles?: string[]
   ) {}
 }

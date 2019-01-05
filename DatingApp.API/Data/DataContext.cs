@@ -28,6 +28,9 @@ namespace DatingApp.API.Data
 
             builder.Entity<Message>().HasOne(m => m.Sender).WithMany(u => u.MessagesSent).HasForeignKey(m => m.SenderId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Message>().HasOne(m => m.Recipient).WithMany(u => u.MessagesReceived).HasForeignKey(m => m.RecipientId).OnDelete(DeleteBehavior.Restrict);
+
+            // Global query filter for photos
+            builder.Entity<Photo>().HasQueryFilter(p => p.IsApproved);
         }
     }
 }

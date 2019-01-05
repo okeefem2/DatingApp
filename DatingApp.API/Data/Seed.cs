@@ -49,6 +49,7 @@ namespace DatingApp.API.Data
                     // _context.Users.Add(user);
                     _userManager.CreateAsync(user, "password").Wait();
                     _userManager.AddToRoleAsync(user, "Member").Wait();
+                    user.Photos.SingleOrDefault().IsApproved = true;
                 }
 
                 var adminUser = new User

@@ -26,17 +26,22 @@ namespace DatingApp.API.Data
             _context.Remove(entity);
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(int id, bool isCurrentUser)
         {
             // Photos are a navigation property, so use Include to include them
-            var user = await _context.Users.Include(u => u.Photos).FirstOrDefaultAsync(u => u.Id == id);
+            var query = _context.Users.Include(u => u.Photos).AsQueryable();
+
+            if(isCurrentUser)
+                query = query.IgnoreQueryFilters();
+            var user = await query.FirstOrDefaultAsync(u => u.Id == id);
+            
             return user;
         }
 
         public async Task<Photo> GetPhoto(int id)
         {
             // Photos are a navigation property, so use Include to include them
-            var photo = await _context.Photos.FirstOrDefaultAsync(p => p.Id == id);
+            var photo = await _context.Photos.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
             return photo;
         }
 
