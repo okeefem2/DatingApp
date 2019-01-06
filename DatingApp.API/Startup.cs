@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,16 @@ namespace DatingApp.API
                     .AddJsonOptions(opt => {
                         opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     });
+            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
+
+            // services.AddSingleton(Configuration);
+            // services.AddOptions();
+            // services.Configure<AppSettings>(Configuration.GetSection("AppSettings")); // Custom app settings
+            // services.Configure<AppInfo>(Configuration.GetSection("AppInfo")); // custom app info
             services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper();
@@ -56,6 +67,7 @@ namespace DatingApp.API
                 };
             });
             services.AddScoped<LogUserActivity>();
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "../DatingApp-SPA/dist/DatingApp-SPA"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,12 +97,38 @@ namespace DatingApp.API
                 }); // Global try catch
                 // app.UseHsts(); // This tells the browser only to send over https
             }
-            // seeder.SeedUsers(); // Uncomment me to seed the database on app startup, recomment once the data is seeded otherwise it will seed more data every time you start the app
-            app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            seeder.SeedUsers(); // Uncomment me to seed the database on app startup, recomment once the data is seeded otherwise it will seed more data every time you start the app
+            // Dev settings
+            // app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             // app.UseHttpsRedirection();
             app.UseAuthentication(); // Tell the http pipeline to use the registered authentication scheme
             // Now if Headers contains Authorization: Bearer ${token} on it then the request will go through (if the token is valid)
-            app.UseMvc(); // Starting middleware between client and API endpoints, routing requests to the correct controller
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles(); // To service static web app
+            // app.UseStaticFiles(new StaticFileOptions
+            // {
+            //     OnPrepareResponse = context =>
+            //     {
+            //         context.Context.Response.Headers.Add("Cache-Control", "no-cache, no-store");
+            //         context.Context.Response.Headers.Add("Expires", "-1");
+            //     }
+            // });
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(name: "default", template: "{controller}/{action=index}/{id}");
+            }); // Starting middleware between client and API endpoints, routing requests to the correct controller
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "../DatingApp-SPA";
+                // if (env.IsEnvironment("Development"))
+                // {
+                //     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                // }
+            });
         }
     }
 }
