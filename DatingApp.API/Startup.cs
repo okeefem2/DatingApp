@@ -38,7 +38,8 @@ namespace DatingApp.API
         {
             services.AddScoped<IAuthRepository, AuthRepository>(); //AddScoped: Service is created once per request in a scope (one for each http request, use same instance for other calls within the request)
             services.AddScoped<IDatingRepository, DatingRepository>();
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                     .AddJsonOptions(opt => {
                         opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

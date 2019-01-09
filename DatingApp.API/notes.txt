@@ -19,3 +19,49 @@ dotnet ef database drop -- drops the db obvi
 dotnet ef migrations remove to remove the migration you didn't want
 
 dotnet ef database update -- applies all of the migrations you have to rebuild the db
+
+docker run -p 3306:3306 --name dating-app-mysql -e MYSQL_ROOT_PASSWORD=dolphinrock -d mysql:latest 
+
+docker exec -it dating-app-mysql bash
+
+mysql -h localhost -P 3306 --protocol=tcp -u root -p
+prompt is password from run command
+
+CREATE USER 'datingappuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'datingappuser'@'localhost' WITH GRANT OPTION;
+
+// Actually needed this, the ip was necessary
+CREATE USER 'datingappuser'@'172.17.0.1' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'datingappuser'@'172.17.0.1' WITH GRANT OPTION;
+
+dotnet run --environment "Production"
+
+Azure deploy:
+
+Create account obvi
+
+https://docs.microsoft.com/en-us/azure/app-service/app-service-web-tutorial-dotnetcore-sqldb
+
+Create a resource group
+
+Create a SQL server logical server in resource group
+
+Then add a SQL database inside the resource that uses the logical server you created
+
+Create app service plan
+
+Create web app with the service plan created
+
+Update application settings in app service plan
+add ASPNETCORE_ENVIRONMENT var to Production
+
+for DB, grab connection string from overview page
+
+add to app service, update username and password
+
+go to deployment center > there is a github CI option
+
+for local git option, add the clone url to remotes for repo
+
+for applying migrations, need to add a line in startup.cs to apply migrations to database (?not a good explanation)
+also need to open a firewall port in azure sql server
